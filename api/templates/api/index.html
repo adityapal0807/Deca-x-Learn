@@ -1,0 +1,76 @@
+{% extends 'api/layout_index.html' %}
+
+{% block body %}
+<div class="container-fluid" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+  <h1>Deca x Learn</h1>
+</div>
+
+<div class="container">
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content:  center;">
+    <div class="row" style="padding: 3%; align-items: center; justify-content: center;">
+      <div style="margin: 2px;">
+        <div class="card" style="width: 18rem;height: 13rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body" style="justify-content: center;">
+            <i class="tim-icons icon-bullet-list-67"></i><h4 class="card-title"><b>Manage Files & Videos</b></h4>
+            <p class="card-text">Store and manage your Books and Videos</p>
+            <a href="{%url 'upload_files' %}" class="btn btn-primary">My Books</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin: 2px;">
+        <div class="card" style="width: 18rem;height: 13rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body" style="justify-content: center;">
+            <i class="tim-icons icon-chart-pie-36"></i><h4 class="card-title"><b>Learn Help</b></h4>
+            <p class="card-text">Your instant doubt resolver</p>
+            <a href="{%url 'learn_help_html' %}" class="btn btn-primary">Let's Study</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin: 2px;">
+        <div class="card" style="width: 18rem;height: 13rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body" style="justify-content: center;">
+            <i class="tim-icons icon-molecule-40"></i><h4 class="card-title"><b>Quiz Generator</b></h4>
+            <p class="card-text">Test your learning skills with AI !</p>
+            <a href="{%url 'quiz_generator' %}" class="btn btn-primary">Start Testing</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="padding: 3%; align-items: center; justify-content: center;">
+      <div style="margin: 2px;">
+        <div class="card" style="width: 18rem; height: 13rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body" style="justify-content: center;">
+            <i class="tim-icons icon-video-66"></i><h4 class="card-title"><b>Youtube AI</b></h4>
+            <p class="card-text">Learn from your favourite form of content with AI's help, Youtube Videos!</p>
+            <a href="{%url 'youtube_ai_html' %}" class="btn btn-primary">Learn</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin: 2px;">
+        <div class="card" style="width: 18rem;height: 13rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body" style="justify-content: center;">
+            <i class="tim-icons icon-camera-18"></i><h4 class="card-title"><b>Vision</b></h4>
+            <p class="card-text">An extra pair of eyes for you!</p>
+            <a href="{%url 'vision_html' %}" class="btn btn-primary">Scan Doubt</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin: 2px;">
+        <div class="card" style="width: 18rem;height: 13rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body" style="justify-content: center;">
+            <i class="tim-icons icon-atom"></i><h4 class="card-title"><b>Mindspace</b></h4>
+            <p class="card-text">Your own personel AI Councellor</p>
+            <a href="{%url 'mindspace_html' %}" class="btn btn-primary">Chat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

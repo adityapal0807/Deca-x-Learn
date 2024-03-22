@@ -1,0 +1,319 @@
+<!-- Vision -->
+
+{% extends 'api/layout.html' %}
+{% block body %}
+
+<style>
+  #question_user {
+    position: relative;
+    margin-bottom: 1%;
+    text-align: right;
+    background-color: #2687ee;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 70%;  /* Updated width to make it take 80% of the container */
+    float: right;  /* Added float to move it to the right */
+}
+
+
+#answer_bot {
+    margin-bottom: 1%;
+    text-align: left;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 70%;  /* Updated width to make it take 80% of the container */
+    float: left;  /* Added float to move it to the left */
+}
+
+#vision_description{
+  margin-bottom: 1%;
+    text-align: left;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 100%;  /* Updated width to make it take 80% of the container */
+      /* Added float to move it to the left */
+}
+</style>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card card-chart">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-6 text-left">
+            <h2 class="card-title">Vision</h2>
+            <div id="output-container"></div>
+          </div>
+        </div>
+        <div style="height: 70vh;overflow: auto;">
+          <div class="upload_image">
+            <div class="container">
+              <div class="json_vision" id="json_vision" hidden></div>
+              <form enctype="multipart/form-data" id="uploadForm">
+                <input type="file" class="btn" id="imageUpload" />
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="uploadImage()"
+                >
+                  Upload
+                </button>
+              </form>
+              <div> 
+            </div>
+            </div>
+          </div>
+          <div id="vision_description">
+            <h4>Question Description</h4>
+            <div id="vision_description_stream"></div>
+          </div>
+          <div class="chat_container" id="chat_container"></div>
+        </div>
+<script>
+          function uploadImage() {
+              const input = document.getElementById('imageUpload');
+              const file = input.files[0];
+              blackDashboard.showSidebarMessage('Image Processing');
+
+              if (file) {
+                  const formData = new FormData();
+                  formData.append('image', file);
+
+                  fetch('/api/vision', {
+                      method: 'POST',
+                      body: formData
+                  })
+                  .then((response) => {
+                    
+                    return response.json()
+              })
+              .then(data =>{
+                console.log('Response:', data.vision_response);
+                document.getElementById('json_vision').innerHTML = data.vision_response
+
+                return fetch('/api/vision_stream', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body : JSON.stringify({ metadata: data.vision_response})
+                    // Add any other headers or configurations as needed
+                });
+              })
+              .then((response) => {
+                
+                const reader = response.body.getReader();
+
+                  return new ReadableStream({
+                    async start(controller) {
+                      const decoder = new TextDecoder();
+                      let partialData = '';
+
+                      while (true) {
+                        const { done, value } = await reader.read();
+
+                        if (done) {
+                          // Handle any remaining partial data
+                          if (partialData) {
+                            handleData(partialData);
+                          }
+                          controller.close();
+                          break;
+                        }
+
+                        // Append the new chunk to the partial data
+                        partialData += decoder.decode(value, { stream: true });
+
+                        // Split on 'data:' to process complete chunks
+                        const chunks = partialData.split('data:');
+                        for (let i = 0; i < chunks.length - 1; i++) {
+                          const chunk = chunks[i].trim();
+                          if (chunk) {
+                            handleData(chunk);
+                          }
+                        }
+
+                        // Save the remaining partial data for the next iteration
+                        partialData = chunks[chunks.length - 1];
+                      }
+                    },
+                  });
+              })
+              .then((stream) => new Response(stream))
+                .then((response) => response.json())
+                .then((responseJson) => {
+                  // Process the JSON response
+                  responseJson.choices.forEach((choice) => {
+                    console.log(choice.message.content);
+                  });
+                })
+                .catch((err) => console.error(err));
+
+                function handleData(data) {
+                try {
+                  const obj = JSON.parse(data);
+                  if (obj && obj.choices && obj.choices[0]?.delta) {
+                    const deltaContent = obj.choices[0].delta.content;
+
+                    // Create a temporary div to apply formatting
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = deltaContent;
+                    console.log(deltaContent)
+                    // Iterate over child nodes and append to chat container
+                    tempDiv.childNodes.forEach((node) => {
+                      
+                      document.getElementById('vision_description_stream').appendChild(node.cloneNode(true));
+                    });
+                  }
+                } catch (error) {
+                  console.error('Error parsing JSON:', error);
+                }
+              }
+              }
+          }
+        </script>
+        <div class="row" style="bottom: 0;padding: 0 5% 0% 5%;">
+          <input
+            type="text"
+            class="form-control"
+            id="mindspace_query"
+            placeholder="SEARCH"
+            style="width: 50vw;padding: 2%;"
+          />
+          <button class="btn btn-secondary" onclick="sendQuestion()">Go</button>
+          <select id="teacher_id" class="btn ">
+            <option value="Student" selected>Student</option>
+            <option value="Teacher">Teacher</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- script to solve -->
+
+<script>
+  function appendMessage(sender, message) {
+      const chatDisplay = document.getElementById('chat_container');
+      const messageDiv = document.createElement('div');
+      if (sender === 'You') {
+          messageDiv.id = 'question_user';
+          messageDiv.innerHTML = `<i class="tim-icons icon-user-run"></i>   <strong>${sender}: </strong><br>${message}`;
+      } else if (sender === 'Chatbot') {
+          messageDiv.id = 'answer_bot';
+          messageDiv.innerHTML = `<i class="tim-icons icon-atom"></i>  <strong>MindSpace : </strong><br>${message}`;
+      }
+      
+          chatDisplay.appendChild(messageDiv);
+      }
+
+      function sendQuestion() {
+          const userQuery = document.getElementById('mindspace_query').value;
+          const VISION_DATA = document.getElementById('json_vision').innerText
+          
+          const selectElement = document.getElementById('teacher_id');
+
+          // Get the selected option
+          const selectedOption = selectElement.options[selectElement.selectedIndex];
+
+          // Get the value of the selected option
+          const category = selectedOption.value;
+
+          appendMessage('You', userQuery);
+
+          appendMessage('Chatbot', '');
+          fetch('/api/solver', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_query: userQuery, metadata : VISION_DATA , category : category}),
+          })
+          .then((response) => {
+              const reader = response.body.getReader();
+
+              return new ReadableStream({
+              async start(controller) {
+                  const decoder = new TextDecoder();
+                  let partialData = '';
+
+                  while (true) {
+                  const { done, value } = await reader.read();
+
+                  if (done) {
+                      // Handle any remaining partial data
+                      if (partialData) {
+                      handleData(partialData);
+                      }
+                      controller.close();
+                      break;
+                  }
+
+                  // Append the new chunk to the partial data
+                  partialData += decoder.decode(value, { stream: true });
+
+                  // Split on 'data:' to process complete chunks
+                  const chunks = partialData.split('data:');
+                  for (let i = 0; i < chunks.length - 1; i++) {
+                      const chunk = chunks[i].trim();
+                      if (chunk) {
+                      handleData(chunk);
+                      }
+                  }
+
+                  // Save the remaining partial data for the next iteration
+                  partialData = chunks[chunks.length - 1];
+                  }
+              },
+              });
+          })
+          .then((stream) => new Response(stream))
+          .then((response) => response.json())
+          .then((responseJson) => {
+              // Process the JSON response
+              responseJson.choices.forEach((choice) => {
+              console.log(choice.message.content);
+
+              
+              });
+          })
+          .catch((err) => console.error(err));
+
+          function handleData(data) {
+          try {
+              const obj = JSON.parse(data);
+              if (obj && obj.choices && obj.choices[0]?.delta) {
+              const deltaContent = obj.choices[0].delta.content;
+
+              // Create a temporary div to apply formatting
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = deltaContent;
+
+              // Iterate over child nodes and append to chat container
+              tempDiv.childNodes.forEach((node) => {
+
+                  const elements = document.querySelectorAll('#answer_bot');
+
+                  // Select the last element from the NodeList
+                  const lastElement = elements[elements.length - 1];
+                  lastElement.appendChild(node.cloneNode(true));
+              });
+              }
+          } catch (error) {
+              console.error('Error parsing JSON:', error);
+          }
+          }
+
+          
+
+      }
+
+      </script>
+{% endblock %}

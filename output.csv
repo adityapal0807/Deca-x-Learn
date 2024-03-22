@@ -1,0 +1,479 @@
+video_id,Content
+ySus5ZS0b94,embeddings and Vector databases are
+ySus5ZS0b94,essential if you're building any type of
+ySus5ZS0b94,AI product in this video I'll go over
+ySus5ZS0b94,what they are and how to use them with
+ySus5ZS0b94,open Ai and their apis I'll cover this
+ySus5ZS0b94,in three parts I'll explain the theory
+ySus5ZS0b94,then the use and finally integration
+ySus5ZS0b94,after watching this video you'll be able
+ySus5ZS0b94,to create long-term memory for a chat
+ySus5ZS0b94,GPT or perform semantic searches based
+ySus5ZS0b94,on a huge database of PDFs connected
+ySus5ZS0b94,directly to an AI let's start there are
+ySus5ZS0b94,two terms I'll cover embeddings and
+ySus5ZS0b94,Vector databases they work together I'll
+ySus5ZS0b94,begin with embeddings what are
+ySus5ZS0b94,embeddings to put it simply an embedding
+ySus5ZS0b94,is data like words that have been
+ySus5ZS0b94,converted into an array of numbers known
+ySus5ZS0b94,as a vector that contains patterns of
+ySus5ZS0b94,relationships the combination of these
+ySus5ZS0b94,numbers that make up the vector act as a
+ySus5ZS0b94,multi-dimensional map to measure
+ySus5ZS0b94,similarity for a simple example let me
+ySus5ZS0b94,describe a 2d graph the words dog and
+ySus5ZS0b94,puppy are often used in similar
+ySus5ZS0b94,situations so in a word embedding they
+ySus5ZS0b94,would be represented by vectors that are
+ySus5ZS0b94,close together well this is a simple 2D
+ySus5ZS0b94,example of a single dimension in reality
+ySus5ZS0b94,the vector has hundreds of Dimensions
+ySus5ZS0b94,that cover the rich multi-dimensional
+ySus5ZS0b94,complex relationship between words
+ySus5ZS0b94,images can also be turned into vectors
+ySus5ZS0b94,too and it's how Google does similar
+ySus5ZS0b94,image searches the image sections are
+ySus5ZS0b94,broken down into arrays of numbers
+ySus5ZS0b94,allowing you to find patterns of
+ySus5ZS0b94,similarity for those with closely
+ySus5ZS0b94,resembling vectors once an embedding is
+ySus5ZS0b94,created it can be stored in a database a
+ySus5ZS0b94,database full of these is considered a
+ySus5ZS0b94,vector database and can be used in
+ySus5ZS0b94,several ways including searching where
+ySus5ZS0b94,results are ranked by relevance to a
+ySus5ZS0b94,query string or clustering where text
+ySus5ZS0b94,strings are grouped by similarity and
+ySus5ZS0b94,recommendations where items with related
+ySus5ZS0b94,text strings are recommended also
+ySus5ZS0b94,classification where text strings are
+ySus5ZS0b94,classified by their most similar label
+ySus5ZS0b94,for the purpose of this video I'm going
+ySus5ZS0b94,to just cover searching since it would
+ySus5ZS0b94,be the most commonly used there are many
+ySus5ZS0b94,practical ways to do this but open AI
+ySus5ZS0b94,has provided a great AI model to
+ySus5ZS0b94,specifically create embeddings it does
+ySus5ZS0b94,not however provide a way to store them
+ySus5ZS0b94,which we will be using a cloud database
+ySus5ZS0b94,for later in the video now let's start
+ySus5ZS0b94,making an embedding by accessing open AI
+ySus5ZS0b94,on the Google page I'm going to browse
+ySus5ZS0b94,open AI I'm going to head over to the
+ySus5ZS0b94,open AI website where I can create a new
+ySus5ZS0b94,account or log into an existing one
+ySus5ZS0b94,which is what I'm gonna do it's free if
+ySus5ZS0b94,you want to sign up I'm going to log in
+ySus5ZS0b94,using my Google credentials and I'll be
+ySus5ZS0b94,taken to a few options here between chat
+ySus5ZS0b94,gbt Dali and other apis I'm going to
+ySus5ZS0b94,head over to their API page and this
+ySus5ZS0b94,will take me to the dashboard here I
+ySus5ZS0b94,want to start off having a look at the
+ySus5ZS0b94,documentation on the embeddings which
+ySus5ZS0b94,you can find just over here and I'll
+ySus5ZS0b94,also link this in the description but
+ySus5ZS0b94,what we're going to start off with is
+ySus5ZS0b94,creating some API requests for
+ySus5ZS0b94,embeddings themselves in order to do
+ySus5ZS0b94,that we're going to head over to the API
+ySus5ZS0b94,references page here under embeddings is
+ySus5ZS0b94,all the information to create one and
+ySus5ZS0b94,it's quite simple it's as easy as doing
+ySus5ZS0b94,a single post request with some inputs
+ySus5ZS0b94,and getting a response back we could
+ySus5ZS0b94,write code to do this or do it inside of
+ySus5ZS0b94,a terminal but the easiest way is inside
+ySus5ZS0b94,of some GUI software and this is called
+ySus5ZS0b94,Postman it's an API platform and it's
+ySus5ZS0b94,also the sponsor for today's video
+ySus5ZS0b94,Postman is a piece of software and also
+ySus5ZS0b94,a web app that's entirely free that
+ySus5ZS0b94,allows you to do all sorts of API
+ySus5ZS0b94,requests it's quite easy to get running
+ySus5ZS0b94,I'm using Windows so I'm going to
+ySus5ZS0b94,download the windows version of the
+ySus5ZS0b94,application here I've launched it the
+ySus5ZS0b94,first thing I'm going to do is create a
+ySus5ZS0b94,workspace for my API queries this I'm
+ySus5ZS0b94,going to call open AI Vector database
+ySus5ZS0b94,there are a few different types of
+ySus5ZS0b94,workspaces between personal private but
+ySus5ZS0b94,I'm going to select the team one because
+ySus5ZS0b94,this allows me to share out my workspace
+ySus5ZS0b94,to other people in the future if I
+ySus5ZS0b94,wanted to for this new workspace I'm
+ySus5ZS0b94,going to open up a new tab kind of like
+ySus5ZS0b94,Chrome here I've got a few different
+ySus5ZS0b94,options but the main one here is the
+ySus5ZS0b94,type of request which can be a get post
+ySus5ZS0b94,push I'm going to do a post request and
+ySus5ZS0b94,here I'm going to get the URL that we're
+ySus5ZS0b94,going to be using for the embeddings
+ySus5ZS0b94,which is just down here and it's the
+ySus5ZS0b94,api.openai forward slash version one
+ySus5ZS0b94,forward slash embeddings URL I'm going
+ySus5ZS0b94,to paste this here in the URL section
+ySus5ZS0b94,and what's useful is that Postman is
+ySus5ZS0b94,telling me that I do need authorization
+ySus5ZS0b94,to use this endpoint for an API I also
+ySus5ZS0b94,have the instructions on how to generate
+ySus5ZS0b94,one so I'm going to head over to this
+ySus5ZS0b94,open AI API Keys page and on this page I
+ySus5ZS0b94,can select it to create a new secret key
+ySus5ZS0b94,I'm going to label this embeddings and
+ySus5ZS0b94,then I'm going to generate it make sure
+ySus5ZS0b94,you keep this key private I'm going to
+ySus5ZS0b94,copy and paste this into Postman and
+ySus5ZS0b94,I'll place it here in the API key
+ySus5ZS0b94,section be aware Postman allows any type
+ySus5ZS0b94,of authorization we're using the bearer
+ySus5ZS0b94,token which is how open AI authenticates
+ySus5ZS0b94,with all this setup we can now create
+ySus5ZS0b94,our first embedding which is the easiest
+ySus5ZS0b94,part on the open AI website under create
+ySus5ZS0b94,embeddings all the information to create
+ySus5ZS0b94,a request is available it only really
+ySus5ZS0b94,needs two things the model as well as
+ySus5ZS0b94,the input for the model in this example
+ySus5ZS0b94,we'll be using open ai's text embedding
+ySus5ZS0b94,using ada002 which is also the cheapest
+ySus5ZS0b94,version and for the input it can be any
+ySus5ZS0b94,type of text so here on Postman I'm
+ySus5ZS0b94,gonna head over to create this body
+ySus5ZS0b94,request under the body I'm going to
+ySus5ZS0b94,select to pass in some raw information
+ySus5ZS0b94,and this will be in the form of a Json
+ySus5ZS0b94,object I'll add in some curly brackets
+ySus5ZS0b94,and here I'm going to pass in the string
+ySus5ZS0b94,for the model as well as the string for
+ySus5ZS0b94,the input in true programming fashion
+ySus5ZS0b94,I'll have this input say hello world and
+ySus5ZS0b94,that's it all that's left is to send
+ySus5ZS0b94,this post request to open Ai and its API
+ySus5ZS0b94,and here's the response we've created
+ySus5ZS0b94,our first embedding quite easy and this
+ySus5ZS0b94,is also the vector for the embedding
+ySus5ZS0b94,down here and if you preview it it quite
+ySus5ZS0b94,a lot of numbers let me now show a few
+ySus5ZS0b94,different types of examples of
+ySus5ZS0b94,embeddings that could be created there
+ySus5ZS0b94,are single word embeddings these are
+ySus5ZS0b94,things like dog or cat where the
+ySus5ZS0b94,embedding is a single word and the
+ySus5ZS0b94,embedding Vector is generated when it's
+ySus5ZS0b94,sent to open AI these would be used in
+ySus5ZS0b94,situations where you might want to
+ySus5ZS0b94,perform a search you can do multi-word
+ySus5ZS0b94,embeddings too so I could for example
+ySus5ZS0b94,have a small sentence like open AI
+ySus5ZS0b94,vectors and embeddings are easy and this
+ySus5ZS0b94,creates a more nuanced embedding but for
+ySus5ZS0b94,the most part it looks the same to us
+ySus5ZS0b94,humans the strength of embeddings is
+ySus5ZS0b94,where you chunk large bits of
+ySus5ZS0b94,information together such as paragraphs
+ySus5ZS0b94,or entire sections of documents to
+ySus5ZS0b94,create an embedding that can be then
+ySus5ZS0b94,later drawn upon when you search a
+ySus5ZS0b94,database and for some useful information
+ySus5ZS0b94,Ada version 2 allows for a maximum input
+ySus5ZS0b94,of 8 000 tokens more or less which is
+ySus5ZS0b94,around 30 000 letters or characters and
+ySus5ZS0b94,to give you an idea of how much that is
+ySus5ZS0b94,a page from a contract or a legal
+ySus5ZS0b94,document can be up to about 3 000
+ySus5ZS0b94,characters on a single page this means
+ySus5ZS0b94,you could probably embed about 10 pages
+ySus5ZS0b94,in a single request to give you an idea
+ySus5ZS0b94,of what this looks like a let me copy
+ySus5ZS0b94,paste this entire page from this NDA
+ySus5ZS0b94,contract then I'm going to jump into
+ySus5ZS0b94,Postman and paste this here into the
+ySus5ZS0b94,input removing any line breaks or
+ySus5ZS0b94,additional spaces this gives you an idea
+ySus5ZS0b94,of just how much is being currently
+ySus5ZS0b94,embedded and this embed request takes
+ySus5ZS0b94,just about as much time as a single word
+ySus5ZS0b94,now that we can create embeddings we
+ySus5ZS0b94,need to store them somewhere openai
+ySus5ZS0b94,doesn't provide databases so we'll need
+ySus5ZS0b94,to create our own and a database full of
+ySus5ZS0b94,embeddings is often referred to as a
+ySus5ZS0b94,vector database I'm going to use a
+ySus5ZS0b94,provider called a single store they
+ySus5ZS0b94,provide a real-time unified distributed
+ySus5ZS0b94,SQL database which also is quite easy to
+ySus5ZS0b94,use since it's in the cloud and on top
+ySus5ZS0b94,of that they allow for you to
+ySus5ZS0b94,incorporate Vector databases straight in
+ySus5ZS0b94,there so what we'll do is set up a
+ySus5ZS0b94,database and we'll start storing our
+ySus5ZS0b94,embeddings and then also start searching
+ySus5ZS0b94,through them first you'll want to set up
+ySus5ZS0b94,an account it's free and comes with
+ySus5ZS0b94,additional credit as well as the ability
+ySus5ZS0b94,to set up unlimited databases I already
+ySus5ZS0b94,have an account so I'm just going to
+ySus5ZS0b94,sign in via Google on the main dashboard
+ySus5ZS0b94,the first thing you'll want to do is
+ySus5ZS0b94,create a workspace and in here we'll
+ySus5ZS0b94,soon create a database for your
+ySus5ZS0b94,workspace you can call it anything in
+ySus5ZS0b94,mind I'm going to call it open AI Vector
+ySus5ZS0b94,database I'm going to select the cloud
+ySus5ZS0b94,platform for AWS but you can also select
+ySus5ZS0b94,a Google or Microsoft Azure platform and
+ySus5ZS0b94,for the region I would recommend just
+ySus5ZS0b94,picking the one that's closest to you
+ySus5ZS0b94,but I'm just going to leave it to the
+ySus5ZS0b94,default on us West next I'll select the
+ySus5ZS0b94,button next on this page I can set how
+ySus5ZS0b94,fast the workspace is how many CPUs how
+ySus5ZS0b94,much RAM it has but for this tutorial
+ySus5ZS0b94,I'm not going to do much I'm just going
+ySus5ZS0b94,to keep it at the bare minimum I'll
+ySus5ZS0b94,leave the advanced settings as the
+ySus5ZS0b94,default and select next this workstation
+ySus5ZS0b94,will set up in the background and once
+ySus5ZS0b94,complete I'm going to create a database
+ySus5ZS0b94,on it let me close these info panels
+ySus5ZS0b94,here we'll have the workspace on the
+ySus5ZS0b94,left hand side and on the right side I'm
+ySus5ZS0b94,going to select create a database I'm
+ySus5ZS0b94,going to name this database open AI
+ySus5ZS0b94,database and then select to create it
+ySus5ZS0b94,once it's created it'll show up here in
+ySus5ZS0b94,the interface and I can select to view
+ySus5ZS0b94,it it doesn't have any tables or data
+ySus5ZS0b94,just now so what we'll do next is head
+ySus5ZS0b94,over to the SQL editor where we can run
+ySus5ZS0b94,some simple commands to create a table
+ySus5ZS0b94,and then input some data make sure that
+ySus5ZS0b94,on the top you have selected the
+ySus5ZS0b94,database you're currently using so in
+ySus5ZS0b94,this case I'm going to select the
+ySus5ZS0b94,database open AI database and now I'm
+ySus5ZS0b94,going to write a simple SQL query it'll
+ySus5ZS0b94,be create table if not exist and I'll
+ySus5ZS0b94,have the name of the table as my table
+ySus5ZS0b94,actually I'll do my Vector table here in
+ySus5ZS0b94,Brackets I'm then going to put in the
+ySus5ZS0b94,different types of columns I'm going to
+ySus5ZS0b94,have the first will be the text the
+ySus5ZS0b94,original text as a text type the next
+ySus5ZS0b94,will be the vector and the vector will
+ySus5ZS0b94,be a blob type you can have different
+ySus5ZS0b94,types such as integers and numbers and
+ySus5ZS0b94,decimals and you can even have a larger
+ySus5ZS0b94,table with things like an ID and other
+ySus5ZS0b94,attributes like a URL but I'm keeping
+ySus5ZS0b94,this nice and simple for this demo let's
+ySus5ZS0b94,run this command and this has created
+ySus5ZS0b94,the table here we can see a logged below
+ySus5ZS0b94,I can head into the database and select
+ySus5ZS0b94,it and view the table additionally I can
+ySus5ZS0b94,view the different columns as well as
+ySus5ZS0b94,the data type additionally I can head
+ySus5ZS0b94,over to sample.2 have a look at the rows
+ySus5ZS0b94,which don't exist yet let's create our
+ySus5ZS0b94,first row and insert a vector into this
+ySus5ZS0b94,database what I'm going to do is open up
+ySus5ZS0b94,the SQL editor in here I'm going to
+ySus5ZS0b94,write some new syntax to insert a row
+ySus5ZS0b94,this is insert into the table name which
+ySus5ZS0b94,is a my Vector table then in Brackets
+ySus5ZS0b94,text and Vector being the two attributes
+ySus5ZS0b94,we want to fill and then the values for
+ySus5ZS0b94,those which in the this case will be the
+ySus5ZS0b94,ones that we have in Postman so I'm
+ySus5ZS0b94,going to open up a postman here I'm
+ySus5ZS0b94,going to copy out of this input hello
+ySus5ZS0b94,world and I'm going to paste this here
+ySus5ZS0b94,into the values next I'll put in the
+ySus5ZS0b94,embedding here I'm going to pass in Json
+ySus5ZS0b94,underscore array underscore pack which
+ySus5ZS0b94,is necessary to turn it into this blob
+ySus5ZS0b94,structure and in here I'm going to pass
+ySus5ZS0b94,in the string of the array this is in
+ySus5ZS0b94,Postman here under embedding and it's
+ySus5ZS0b94,this huge block of numbers I'll select
+ySus5ZS0b94,to copy all of them and then here in the
+ySus5ZS0b94,interface I'll paste them back in and
+ySus5ZS0b94,that's it now I simply have to run the
+ySus5ZS0b94,command and this should enter this
+ySus5ZS0b94,embedding into the vector database which
+ySus5ZS0b94,it just has here we can see the results
+ySus5ZS0b94,one row added and if I head over to the
+ySus5ZS0b94,open AI database under my Vector table
+ySus5ZS0b94,I'll be able to see under sample data
+ySus5ZS0b94,this a new row has been added now it's
+ySus5ZS0b94,time to add some more data because we
+ySus5ZS0b94,can't really have a database with just a
+ySus5ZS0b94,single row what I'm going to do is is
+ySus5ZS0b94,head back to postman search through the
+ySus5ZS0b94,history of all the posts we've done so
+ySus5ZS0b94,far and pull out some of these examples
+ySus5ZS0b94,to place in as a rose inside of the
+ySus5ZS0b94,database so I've got this one here for
+ySus5ZS0b94,open AI vectors and embeddings are easy
+ySus5ZS0b94,I'll copy the input as well as the
+ySus5ZS0b94,embedding straight into single store wow
+ySus5ZS0b94,it always surprises me how many
+ySus5ZS0b94,dimensions there are to this embedding
+ySus5ZS0b94,now I'll enter this and insert this row
+ySus5ZS0b94,heading back to the database I'll be
+ySus5ZS0b94,able to view the sample data and here it
+ySus5ZS0b94,is let me try this one more time with a
+ySus5ZS0b94,larger example I've got this one here
+ySus5ZS0b94,which was the document which had quite a
+ySus5ZS0b94,few different characters in here and the
+ySus5ZS0b94,process is more or less the same copying
+ySus5ZS0b94,out the text then copying the embedding
+ySus5ZS0b94,vector and then finally inserting the
+ySus5ZS0b94,row into single store let me show you
+ySus5ZS0b94,the three rows that now exist that are
+ySus5ZS0b94,quite simple but enough for us to start
+ySus5ZS0b94,performing searches searching a vector
+ySus5ZS0b94,database for embeddings is actually
+ySus5ZS0b94,quite simple the first step is to
+ySus5ZS0b94,identify what you want to search for so
+ySus5ZS0b94,for example we might want to search for
+ySus5ZS0b94,anything related to open AI next we have
+ySus5ZS0b94,to create an embedding for our search
+ySus5ZS0b94,term in this case we would create an
+ySus5ZS0b94,embedding for the word open Ai and then
+ySus5ZS0b94,finally we would perform a search in the
+ySus5ZS0b94,database against the existing embeddings
+ySus5ZS0b94,this would return a list with the
+ySus5ZS0b94,closest similarity being at the top
+ySus5ZS0b94,heading over to the SQL editor I'm going
+ySus5ZS0b94,to write this query by writing the
+ySus5ZS0b94,following select text which is one of
+ySus5ZS0b94,the columns then I'm going to pass in
+ySus5ZS0b94,dot underscore product passing in the
+ySus5ZS0b94,next column the vector column and adding
+ySus5ZS0b94,in Json underscore array underscore pack
+ySus5ZS0b94,I'll leave this empty for now but this
+ySus5ZS0b94,is where I'll add the array and then
+ySus5ZS0b94,convert this to a score that we can use
+ySus5ZS0b94,for ranking results next I'll grab this
+ySus5ZS0b94,from my Vector table and I'll order it
+ySus5ZS0b94,by the score in descending order this
+ySus5ZS0b94,will be limited to just Five results now
+ySus5ZS0b94,opening up Postman I'm going to need to
+ySus5ZS0b94,create an amending to search so the
+ySus5ZS0b94,embedding term I want to use is open AI
+ySus5ZS0b94,this will create the vector here which
+ySus5ZS0b94,I'm going to copy out and then paste
+ySus5ZS0b94,back into the SQL query the SQL query
+ySus5ZS0b94,will use this as a reference and use it
+ySus5ZS0b94,as part of the scoring system so let me
+ySus5ZS0b94,run this and show you the results here's
+ySus5ZS0b94,our successful search of the vector
+ySus5ZS0b94,database against the term open Ai and
+ySus5ZS0b94,all the other vectors that are similar
+ySus5ZS0b94,to it the scores are ratings essentially
+ySus5ZS0b94,how highly ranked it is is how similar
+ySus5ZS0b94,it is to the content already in the
+ySus5ZS0b94,database I could create another search
+ySus5ZS0b94,term embedding here called hello Earth
+ySus5ZS0b94,and use the vector that I receive as a
+ySus5ZS0b94,search and have a try to see if this
+ySus5ZS0b94,changes up the results pasting this into
+ySus5ZS0b94,the query here on the vector database
+ySus5ZS0b94,I'll find that now hello world is the
+ySus5ZS0b94,top ranking result built with a much
+ySus5ZS0b94,higher score than all the others and
+ySus5ZS0b94,this is fundamentally how Vector
+ySus5ZS0b94,searching Works in this part of the
+ySus5ZS0b94,video I'm going to create an actual
+ySus5ZS0b94,function using JavaScript on node.js to
+ySus5ZS0b94,interact with embeddings first let me
+ySus5ZS0b94,create a brand new folder called openai
+ySus5ZS0b94,vectors and embeddings next I'm going to
+ySus5ZS0b94,do a fetched request to the open AI API
+ySus5ZS0b94,so here inside of the file index.js I'm
+ySus5ZS0b94,going to write in a small header here to
+ySus5ZS0b94,connect up to open AI in this header I'm
+ySus5ZS0b94,going to make the content type as
+ySus5ZS0b94,application Json and I'm also going to
+ySus5ZS0b94,pass in the authorization which will
+ySus5ZS0b94,have the key here as a barrier token
+ySus5ZS0b94,similar to what I did inside of Postman
+ySus5ZS0b94,the safe and secure way to do this is
+ySus5ZS0b94,using an environmental key but for this
+ySus5ZS0b94,example here I'm just going to pass in
+ySus5ZS0b94,my token straight away to make a life
+ySus5ZS0b94,easier for myself this of course is
+ySus5ZS0b94,something you want to keep secure and
+ySus5ZS0b94,after this video I'll be deleting this
+ySus5ZS0b94,key now Now to create the function I'm
+ySus5ZS0b94,going to create a async function and I'm
+ySus5ZS0b94,going to call this create embedding it's
+ySus5ZS0b94,only going to pass in one item which
+ySus5ZS0b94,will be the text and this is the text
+ySus5ZS0b94,that we're going to embed and I'm going
+ySus5ZS0b94,to use this to pass to an API now I'm
+ySus5ZS0b94,not going to use axios or anything like
+ySus5ZS0b94,that I'm just doing a regular fetch
+ySus5ZS0b94,command here so I'm going to pass in let
+ySus5ZS0b94,response equals await fetch I'm going to
+ySus5ZS0b94,pass in the URL for open ai's version 1
+ySus5ZS0b94,of embeddings which is just a forward
+ySus5ZS0b94,slash V1 forward slash embeddings then
+ySus5ZS0b94,I'm going to pass in a couple of
+ySus5ZS0b94,parameters this will be a post request
+ySus5ZS0b94,so I'll set the method here as a post
+ySus5ZS0b94,I'll pass in the headers that we just
+ySus5ZS0b94,defined earlier and then finally I'll
+ySus5ZS0b94,pass in the body which I'm going to Json
+ySus5ZS0b94,stringify and this is the post data
+ySus5ZS0b94,there's two items here just like before
+ySus5ZS0b94,the model itself which is the text
+ySus5ZS0b94,embedding Ada model and the second item
+ySus5ZS0b94,is the input which is the text we want
+ySus5ZS0b94,to embed next I'll listen to see if
+ySus5ZS0b94,there is a response from the server and
+ySus5ZS0b94,that response is okay and then I just
+ySus5ZS0b94,want to console log it out and return it
+ySus5ZS0b94,as part of this function here I'll write
+ySus5ZS0b94,response Json so it'll turn it into a
+ySus5ZS0b94,Json object and then I'll pull out the
+ySus5ZS0b94,data from that I'll console log out the
+ySus5ZS0b94,data and then I'll return the data this
+ySus5ZS0b94,function is now complete so what I'm
+ySus5ZS0b94,going to do is call it to test it out
+ySus5ZS0b94,here I'm going to call create embeddings
+ySus5ZS0b94,and just pass in hello world next I'll
+ySus5ZS0b94,open up the terminal and run node
+ySus5ZS0b94,index.js to run this function and just
+ySus5ZS0b94,like on Postman this embedding gets
+ySus5ZS0b94,returned quite quickly we can see it
+ySus5ZS0b94,just over here with the array here on
+ySus5ZS0b94,the right hand side and we can plug this
+ySus5ZS0b94,into a database next what can we do with
+ySus5ZS0b94,this well there's quite a few things you
+ySus5ZS0b94,can import a PDF library to read PDFs
+ySus5ZS0b94,chunk them and and then store them in a
+ySus5ZS0b94,database so that they could be retrieved
+ySus5ZS0b94,later and searched through you could do
+ySus5ZS0b94,the same for websites or you could do
+ySus5ZS0b94,the same for all sorts of things if
+ySus5ZS0b94,you've stayed until this point you
+ySus5ZS0b94,definitely want to learn more about
+ySus5ZS0b94,openai check out my new book teach me
+ySus5ZS0b94,open Ai and GPT this is a digital book
+ySus5ZS0b94,I've put on sale for 49 that covers
+ySus5ZS0b94,everything from how to use the openai
+ySus5ZS0b94,API how to do fine tuning and much more
+ySus5ZS0b94,in a really visually interesting and fun
+ySus5ZS0b94,way it's over 48 pages and it's in the
+ySus5ZS0b94,description below these were just the
+ySus5ZS0b94,basics if you want to learn more have a
+ySus5ZS0b94,look at my video here on integrating
+ySus5ZS0b94,openai a database and even a web app
+ySus5ZS0b94,together and if you haven't already this
+ySus5ZS0b94,is the end of the video so don't forget
+ySus5ZS0b94,to hit

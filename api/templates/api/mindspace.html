@@ -1,0 +1,178 @@
+<!-- Mindspace  -->
+
+{% extends 'api/layout.html' %}
+
+{% block body %}
+<style>
+#question_user {
+    position: relative;
+    margin-bottom: 1%;
+    text-align: right;
+    background-color: #2687ee;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 70%;  /* Updated width to make it take 80% of the container */
+    float: right;  /* Added float to move it to the right */
+}
+
+
+#answer_bot {
+    margin-bottom: 1%;
+    text-align: left;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 70%;  /* Updated width to make it take 80% of the container */
+    float: left;  /* Added float to move it to the left */
+}
+
+</style>
+<div class="row">
+    <div class="col-12">
+    <div class="card card-chart"> 
+        <div class="card-header">
+        <div class="row">
+            <div class="col-sm-6 text-left">
+            <h2 class="card-title">Mindspace</h2>
+            <div id="output-container"></div>
+            </div>
+        </div>
+        <div class="row" style="padding:1% 3% 1% 3%;">
+            <center><h4 class="card-title">Hey there! I'm Mindspace, your go-to chat buddy. Need advice on future plans, easing academic stress, or just a friendly chat? I'm here for you, keeping it real and making our talks uniquely yours. Let's dive in!</h4></center>
+        </div>
+        <div style="height: 60vh;overflow: auto;">
+            <div class="chat_container" id="chat_container">
+            
+            </div>
+        </div>
+        <div class="row" style="bottom: 0;padding: 0 5% 0% 5%;">
+            
+            <input type="text" class="form-control" id="mindspace_query" placeholder="SEARCH" style="width: 50vw;padding: 2%;">
+            <button class="btn btn-secondary" onclick="sendQuestion()">Go</button>
+        </div>
+        
+    </div>
+    </div>
+</div>
+<script>
+    function appendMessage(sender, message) {
+        const chatDisplay = document.getElementById('chat_container');
+        const messageDiv = document.createElement('div');
+        if (sender === 'You') {
+            messageDiv.id = 'question_user';
+            messageDiv.innerHTML = `<i class="tim-icons icon-user-run"></i>   <strong>${sender}: </strong><br>${message}`;
+        } else if (sender === 'Chatbot') {
+            messageDiv.id = 'answer_bot';
+            messageDiv.innerHTML = `<i class="tim-icons icon-atom"></i>  <strong>MindSpace : </strong><br>${message}`;
+        }
+        
+            chatDisplay.appendChild(messageDiv);
+        }
+
+        function sendQuestion() {
+            const userQuery = document.getElementById('mindspace_query').value;
+
+            appendMessage('You', userQuery);
+
+            appendMessage('Chatbot', '');
+            fetch('/api/mindspace', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_query: userQuery }),
+            })
+            .then((response) => {
+                const reader = response.body.getReader();
+
+                return new ReadableStream({
+                async start(controller) {
+                    const decoder = new TextDecoder();
+                    let partialData = '';
+
+                    while (true) {
+                    const { done, value } = await reader.read();
+
+                    if (done) {
+                        // Handle any remaining partial data
+                        if (partialData) {
+                        handleData(partialData);
+                        }
+                        controller.close();
+                        break;
+                    }
+
+                    // Append the new chunk to the partial data
+                    partialData += decoder.decode(value, { stream: true });
+
+                    // Split on 'data:' to process complete chunks
+                    const chunks = partialData.split('data:');
+                    for (let i = 0; i < chunks.length - 1; i++) {
+                        const chunk = chunks[i].trim();
+                        if (chunk) {
+                        handleData(chunk);
+                        }
+                    }
+
+                    // Save the remaining partial data for the next iteration
+                    partialData = chunks[chunks.length - 1];
+                    }
+                },
+                });
+            })
+            .then((stream) => new Response(stream))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // Process the JSON response
+                responseJson.choices.forEach((choice) => {
+                const speechText = choice.message.content;
+                console.log(choice.message.content);
+
+                speakText(speechText);
+
+                    // Append the response to the chat container
+                appendMessage('Chatbot', `${speechText} <button class="btn btn-link" onclick="speakText('${speechText}')"><i class="tim-icons icon-volume-98"></i></button>`);
+                });
+            })
+            .catch((err) => console.error(err));
+
+            function handleData(data) {
+            try {
+                const obj = JSON.parse(data);
+                if (obj && obj.choices && obj.choices[0]?.delta) {
+                const deltaContent = obj.choices[0].delta.content;
+
+                // Create a temporary div to apply formatting
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = deltaContent;
+
+                // Iterate over child nodes and append to chat container
+                tempDiv.childNodes.forEach((node) => {
+
+                    const elements = document.querySelectorAll('#answer_bot');
+
+                    // Select the last element from the NodeList
+                    const lastElement = elements[elements.length - 1];
+                    lastElement.appendChild(node.cloneNode(true));
+                });
+                }
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+            }
+
+        
+        }
+        function speakText(text) {
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = text;
+            speechSynthesis.speak(utterance);
+        }
+
+        
+
+        </script>
+{% endblock %}

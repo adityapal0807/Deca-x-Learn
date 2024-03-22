@@ -1,0 +1,137 @@
+{% extends 'api/layout.html' %}
+
+{% block body %}
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Generate Quiz</h4>
+            </div>
+            <div class="card-body" style="padding: 2%;">
+                <div class="row">
+                    <div class="col-md-6" style="padding-left: 2%; padding-right: 5%;">
+                        <!-- generating -->
+                    <form method="post" action="{% url 'quiz_generator' %}">
+                        {%csrf_token%}
+                        <div class="row">
+                            <h2>Your Books</h2>
+                        </div>
+                        <div class="row">
+                            <label for="selected_book">Select a Book:</label>
+                            <select id="selected_book", class="form-control" name="selected_book">
+                                <option value="" disabled selected hidden>Choose a book</option>
+                                {% for book in user_books %}
+                                    <option value="{{ book.id }}">{{ book.book_name }} - {{ book.book_category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label for="quiz_query">Write a topic/chapter to create quiz about</label>
+                            <input class="form-control" type="text" name="quiz_query" id="quiz_query">
+                        </div>
+                        <div class="row">
+                            <label for="quiz_remarks">Remarks</label>
+                            <input class="form-control" type="text" name="quiz_remarks" id="quiz_remarks" placeholder="None for no remarks">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="quiz_difficulty">Select Difficulty:</label>
+                            <div class="form-check">
+                                <input  type="radio" name="quiz_difficulty" id="easy" value="easy">
+                                <label class="form-check-label" for="easy">
+                                    Easy
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="" type="radio" name="quiz_difficulty" id="intermediate" value="intermediate">
+                                <label class="form-check-label" for="intermediate">
+                                    Intermediate
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="" type="radio" name="quiz_difficulty" id="difficult" value="difficult">
+                                <label class="form-check-label" for="difficult">
+                                    Difficult
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="" type="radio" name="quiz_difficulty" id="advanced" value="advanced">
+                                <label class="form-check-label" for="advanced">
+                                    Advanced
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary" type="submit" onclick="popUP()">Submit</button>
+                        </div>
+                    </form>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- quiz actual -->
+                    <form id="quizForm" action="{% url 'test_eval' %}" method="post">
+                    {%csrf_token%}
+                        <div class="row">
+                            <h2>Quiz</h2>
+                        </div>
+                        {%if score%}
+                            <h3>Your score is {{score}} out of {{total_questions}}</h3>
+                        {%endif%}
+                        <br>
+                        <!-- <div class="col-md-6"> -->
+                                {% for question in answer_by_gpt.questions %}
+                                    <div class="row">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <div>
+                                                <p>Question {{ forloop.counter0|add:1 }}: {{ question.question }}</p>
+                                            </div>
+                                            <div>
+                                                <ul style="list-style: none;">
+                                                    <li><input type="radio" id="question_{{ forloop.counter0 }}_a" name="question_{{ forloop.counter0 }}" value="a"><label for="question_{{ forloop.counter0 }}_a">{{ question.options.a }}</label></li>
+                                                    <li><input type="radio" id="question_{{ forloop.counter0 }}_b" name="question_{{ forloop.counter0 }}" value="b"><label for="question_{{ forloop.counter0 }}_b">{{ question.options.b }}</label></li>
+                                                    <li><input type="radio" id="question_{{ forloop.counter0 }}_c" name="question_{{ forloop.counter0 }}" value="c"><label for="question_{{ forloop.counter0 }}_c">{{ question.options.c }}</label></li>
+                                                    <li><input type="radio" id="question_{{ forloop.counter0 }}_d" name="question_{{ forloop.counter0 }}" value="d"><label for="question_{{ forloop.counter0 }}_d">{{ question.options.d }}</label></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                {% endfor %}
+                        <!-- </div> -->
+                        
+                        {%if answer_by_gpt%}
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        {%endif%}
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        function popUP(){
+            blackDashboard.showSidebarMessage('Generating quiz, please wait');
+        }
+    </script>
+    <script>
+        function submitForm() {
+            var formData = new FormData(document.getElementById('quizForm'));
+            print(formData)
+    
+            fetch("{% url 'test_eval' %}", {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Handle the response as needed
+                
+                alert(data.score + ' out of ' + data.total_questions);
+                blackDashboard.showSidebarMessage(data);
+                // console.log(data);
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error:', error);
+            });
+        }
+    </script>
+{%endblock%}

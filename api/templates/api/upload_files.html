@@ -1,0 +1,234 @@
+{% extends 'api/layout.html' %}
+
+{% block body %}
+
+          <div class="col-lg-12">
+                {% csrf_token %}
+                <div class="card">
+                    <div class="card-header">
+                      <h4 class="card-title"><b>Upload and Manage Files & Videos</b></h4>
+                    </div>
+                    <div class="card-body">
+                      <div style="padding: 1%;">
+                        <form action="" method="post" enctype="multipart/form-data" onsubmit="updateFileName()">
+                          {%csrf_token%}
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <h4>Add Books:</h4>
+                                  </div>
+                                  <div class="row">
+                                    <label for="uploaded_file">Choose File, pdf/doc</label><br>
+                                    <input class="form-control" type="file" name="uploaded_file" id="uploaded_file" required>
+                                    <input type="hidden" id="fileName" name="fileName">
+                                    <br>
+                                    <p>{{message}}</p>
+                                  </div>
+                                  <div class="row">
+                                    <label for="book_category">Choose Category</label><br>
+                                    <select class="form-control" name="book_category" required>
+                                        <option value="" disabled selected>Choose category</option>
+                                        <option value="PCMB">PCMB</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Non_Engineering">Non-Engineering</option>
+                                        <option value="Fiction">Fiction</option>
+                                        <option value="Non_Fiction">Non-Fiction</option>
+                                        <option value="Literary">Literary</option>
+                                    </select>
+                                  </div>
+                                  <div class="row">
+                                    <input class="btn btn-secondary" type="submit" name="submit">
+                                  </div>
+                                </div>
+                              </div>
+                          </form>
+                              </div>
+                              
+                            <div class="col-md-6">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <h4>Add Videos:</h4>
+                                  </div>
+                                  <div class="row">
+                                    <label for="youtube_link">Youtube Link</label>
+                                    <input class="form-control" type="text" id="youtube_link" required>
+                                  </div>
+                                  <div class="row">
+                                    <button class="btn btn-secondary" onclick="saveVideo()">Save Video</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+
+
+                        <!-- <div class="row">
+                          <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                            <div class="col-md-6">
+                              <label for="uploaded_file">Choose File, pdf/doc</label><br>
+                              <input class="form-control" type="file" name="uploaded_file" id="uploaded_file" required>
+                              <input type="hidden" id="fileName" name="fileName">
+                              <br>
+                              <p>{{message}}</p>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="book_category">Choose Category</label><br>
+                              <select class="form-control" name="book_category" required>
+                                <option value="" disabled selected>Choose category</option>
+                                <option value="PCMB">PCMB</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Non_Engineering">Non-Engineering</option>
+                                <option value="Fiction">Fiction</option>
+                                <option value="Non_Fiction">Non-Fiction</option>
+                                <option value="Literary">Literary</option>
+                            </select>
+                            </div>
+                          </div>
+                        </div> -->
+                        <!-- <div class="row">
+                          <div class="col-md-6">
+                            <input class="btn btn-secondary" type="submit" name="submit">
+                          </div>
+                        </div> -->
+                      
+                      
+                      <!-- <div class="row">
+                        <label for="youtube_link">Youtube Link</label>
+                        <input class="form-control" type="text" id="youtube_link" required>
+                        <button class="btn btn-secondary" onclick="saveVideo()">Save</button>
+                      </div> -->
+                      {% if user_books %}
+                        <div class="row" style="margin-top: 5%;">
+                          <h2>Your Books</h2>
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th>Sr No.</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% for book in user_books %}
+                                    <tr>
+                                      <td>{{ forloop.counter }}</td>
+                                      <td>{{ book.book_name }}</td>
+                                      <input type="hidden" name="book_ids[]" value="{{ book.id }}">
+                                      <form method="post" action="{% url 'update_book' book.id %}">
+                                        {%csrf_token%}
+                                        <td>
+                                          <select class="form-control" name="book_category">
+                                            <option value="PCMB" {% if book.book_category == 'PCMB' %}selected{% endif %}>PCMB</option>
+                                            <option value="Engineering" {% if book.book_category == 'Engineering' %}selected{% endif %}>Engineering</option>
+                                            <option value="Non_Engineering" {% if book.book_category == 'Non_Engineering' %}selected{% endif %}>Non-Engineering</option>
+                                            <option value="Fiction" {% if book.book_category == 'Fiction' %}selected{% endif %}>Fiction</option>
+                                            <option value="Non_Fiction" {% if book.book_category == 'Non_Fiction' %}selected{% endif %}>Non-Fiction</option>
+                                            <option value="Literary" {% if book.book_category == 'Literary' %}selected{% endif %}>Literary</option>
+                                          </select>
+                                        </td>
+                                        <td>
+                                          <div style="display: flex; flex-direction: row;align-items:flex-start;">
+                                            <button type="submit" class="btn btn-primary" style="margin-right: 2%;">Update</button>
+                                            <a href="{% url 'delete_book' book.id %}" class="btn btn-danger">Delete</a>
+                                          </div>
+                                        </td>
+                                      </form>
+                                    </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                          </div>
+                        {% endif %}
+                        {% if user_videos %}
+                        <div class="row" style="margin-top: 5%;">
+                          <h2>Your Videos</h2>
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th>Sr No.</th>
+                                    <th>Title</th>
+                                    <th>Link</th>
+                                    <th>Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% for video in user_videos %}
+                                    <tr>
+                                      <td>{{ forloop.counter }}</td>
+                                      <td>{{ video.video_name }}</td>
+                                      <td><a href="{{ video.video_link }}">{{ video.video_link }}</a></td>
+                                      <input type="hidden" name="video[]" value="{{ video.id }}">
+                                        <td>
+                                          <div style="display: flex; flex-direction: row;align-items:flex-start;">
+                                            <a href="{% url 'delete_video' video.id %}" class="btn btn-danger">Delete</a>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                          </div>
+                        {% endif %}
+                      </div>
+                      
+                    </div>   
+            </div>
+            <script>
+              function saveVideo() {
+                  blackDashboard.showSidebarMessage('Saving Video data');
+                  const youtubeLink = document.getElementById('youtube_link').value;
+                  console.log(youtubeLink)
+                  fetch('/api/upload_video', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ youtube_link: youtubeLink }),
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      // Assuming data contains the URL to the PDF file
+                      const test= data.test
+                      console.log(test)
+                  })
+                  .catch(error => console.error(error));
+              }
+              
+              </script>
+              <script>
+                function updateFileName() {
+                    blackDashboard.showSidebarMessage('Adding Document to database');
+                    // Get the file input element
+                    var fileInput = document.getElementById('uploaded_file');
+            
+                    // Get the hidden input element
+                    var fileNameInput = document.getElementById('fileName');
+            
+                    // Check if a file is selected
+                    if (fileInput.files.length > 0) {
+                        // Get the file name (excluding file format)
+                        var fileName = fileInput.files[0].name.split('.')[0];
+            
+                        // Remove spaces from the file name
+                        fileName = fileName.replace(/\s/g, '-');
+            
+                        // Update the value of the hidden input
+                        fileNameInput.value = fileName;
+                    }
+                    console.log(fileNameInput)
+                }
+                
+            </script>
+
+            <script>
+              var activeNavbar= getElementById('uploadFilesListItem')
+              activeNavbar.classList.add('active');
+            </script>
+
+            
+{% endblock %}
