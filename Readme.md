@@ -38,7 +38,7 @@ Beyond academics, our AI functions as a mind coach, assisting with day-to-day pr
 
 ### OpenAI
 
-- **Models Used**: GPT-3.5 turbo, GPT-4
+- **Models Used**: GPT-3.5 turbo, GPT-4 , GPT Vision
 - **Advantages**: Utilizing OpenAI's API offers numerous advantages.
   - Enables seamless integration of cutting-edge language capabilities into various applications and systems.
   - Developers can harness the power of AI-generated text, natural language understanding, and context comprehension.
@@ -48,11 +48,12 @@ Beyond academics, our AI functions as a mind coach, assisting with day-to-day pr
 ### Backend
 
 - **Framework**: Django
+- **Database**: ChromaDB
 - **Libraries**: Refer to `requirements.txt` for required libraries.
 
 ### Frontend
 
-- **Technologies**: HTML, CSS
+- **Technologies**: HTML, CSS, Javascript
 
 ## Getting Started
 
