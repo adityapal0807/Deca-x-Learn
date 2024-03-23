@@ -1,5 +1,6 @@
 # DECA X LEARN - YOUR PERSONAL AI COACH
 
+![DECA X LEARN Logo](Book+Quiz.jpg)
 ![DECA X LEARN Logo](Vision+Mindspace.jpg)
 
 ## Table of Contents
